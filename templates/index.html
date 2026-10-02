@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Parkinson Tespit Sistemi</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <div class="container">
+
+        <header>
+            <h1>Parkinson <span>Tespit</span> Sistemi</h1>
+            <p class="subtitle">
+                Ses Analizi Tabanlı Parkinson Sınıflandırma Sistemi
+            </p>
+        </header>
+
+        <form method="POST" action="/predict" class="prediction-form">
+
+            <!-- MODEL SEÇİMİ -->
+            <div class="section">
+
+                <div class="section-label">
+                    <div class="step-num">1</div>
+                    <h2>Model Seçin</h2>
+                </div>
+
+                <div class="model-grid">
+
+                    {% for key, model in models.items() %}
+
+                    <label class="model-card {% if not model.available %}disabled{% endif %}">
+
+                        <input
+                            type="radio"
+                            name="model"
+                            value="{{ key }}"
+                            required
+                            {% if not model.available %}disabled{% endif %}
+                            onchange="onModelChange(this.value)"
+                        >
+
+                        <div class="model-content">
+
+                            <h3>
+                                {{ model.name }}
+                            </h3>
+
+                            {% if not model.available %}
+                            <p class="not-available">
+                                Henüz hazır değil
+                            </p>
+                            {% endif %}
+
+                        </div>
+
+                    </label>
+
+                    {% endfor %}
+
+                </div>
+            </div>
+
+
+            <!-- ÖZNE SEÇİMİ -->
+            <div class="section">
+
+                <div class="section-label">
+                    <div class="step-num">2</div>
+                    <h2>Test Özne Seçin</h2>
+                </div>
+
+
+                <!-- Eğitim seti -->
+                <div id="train-subject-block">
+
+                    <p class="info" id="train-subject-info">
+                        Bir model seçtikten sonra burada test özneleri görünecektir.
+                    </p>
+
+                    <div class="subject-selector">
+
+                        <label for="subject_id_train">
+                            Özne ID
+                        </label>
+
+                        <select
+                            name="subject_id"
+                            id="subject_id_train"
+                            disabled
+                        >
+
+                            {% for sid in robust_subjects %}
+
+                            <option value="{{ sid }}">
+                                Özne {{ sid }}
+                                {% if sid <= 20 %}
+                                    — Parkinson Hastası (PD)
+                                {% else %}
+                                    — Sağlıklı Kontrol (HC)
+                                {% endif %}
+                            </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+                </div>
+
+
+                <!-- Bağımsız test seti -->
+                <div id="test-subject-block" style="display:none;">
+
+                    <p class="info">
+                        <b>Bağımsız test seti</b>nden bir özne seçin.
+                        Bu set 28 Parkinson hastasından oluşur ve model
+                        daha önce bu kişileri görmemiştir.
+                    </p>
+
+                    <div class="subject-selector">
+
+                        <label for="subject_id_test">
+                            Özne ID
+                        </label>
+
+                        <select
+                            name="subject_id"
+                            id="subject_id_test"
+                            disabled
+                        >
+
+                            {% for sid in unlu_subjects %}
+
+                            <option value="{{ sid }}">
+                                Özne {{ sid }} — Parkinson Hastası (PD)
+                            </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+                </div>
+
+            </div>
+
+
+            <!-- TAHMİN BUTONU -->
+            <div class="section">
+
+                <button
+                    type="submit"
+                    class="predict-button"
+                >
+                    Tahmin Et
+                </button>
+
+            </div>
+
+        </form>
+
+
+        <footer>
+            <p>
+                Bu sistem klinik tanı yerine geçmez.
+                Yalnızca araştırma ve eğitim amaçlıdır.
+            </p>
+        </footer>
+
+    </div>
+
+
+    <script>
+
+        document
+            .querySelector("form")
+            .addEventListener("submit", function () {
+
+                const trainSel =
+                    document.getElementById("subject_id_train");
+
+                const testSel =
+                    document.getElementById("subject_id_test");
+
+                const trainBlock =
+                    document.getElementById("train-subject-block");
+
+
+                if (trainBlock.style.display === "none") {
+
+                    trainSel.disabled = true;
+                    testSel.disabled = false;
+
+                } else {
+
+                    testSel.disabled = true;
+                    trainSel.disabled = false;
+
+                }
+
+            });
+
+
+        function onModelChange(selectedModel) {
+
+            const trainBlock =
+                document.getElementById("train-subject-block");
+
+            const testBlock =
+                document.getElementById("test-subject-block");
+
+            const trainSel =
+                document.getElementById("subject_id_train");
+
+            const testSel =
+                document.getElementById("subject_id_test");
+
+            const trainInfo =
+                document.getElementById("train-subject-info");
+
+
+            if (selectedModel === "unlu") {
+
+                trainBlock.style.display = "none";
+                testBlock.style.display = "block";
+
+                trainSel.disabled = true;
+                testSel.disabled = false;
+
+
+            } else if (selectedModel === "conv1d") {
+
+                trainBlock.style.display = "block";
+                testBlock.style.display = "none";
+
+                trainSel.disabled = false;
+                testSel.disabled = true;
+
+                trainInfo.innerHTML =
+                    "Eğitim setindeki bir özneyi seçin. " +
+                    "Conv1D modeli <b>önceden hesaplanmış</b> " +
+                    "s-LOO sonuçlarını kullanır.";
+
+
+            } else {
+
+                trainBlock.style.display = "block";
+                testBlock.style.display = "none";
+
+                trainSel.disabled = false;
+                testSel.disabled = true;
+
+                trainInfo.innerHTML =
+                    "Eğitim setindeki bir özneyi seçin. " +
+                    "Model bu özneyi <b>dışarıda tutarak</b> " +
+                    "kalan özneler ile yeniden eğitilecek " +
+                    "ve tahmin yapacaktır.";
+            }
+
+        }
+
+    </script>
+
+</body>
+</html>

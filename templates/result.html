@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Tahmin Sonucu | Parkinson Tespit Sistemi</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<div class="container">
+
+    <header>
+
+        <div class="header-badge">
+            <span>●</span>
+            Tahmin Sonucu
+        </div>
+
+        <h1>
+            Parkinson <span>Tespit</span> Sistemi
+        </h1>
+
+    </header>
+
+
+    {% if error %}
+
+        <div class="error-box">
+
+            <h2>Hata</h2>
+
+            <p>{{ error }}</p>
+
+            <a href="/" class="back-link">
+                ← Ana Sayfaya Dön
+            </a>
+
+        </div>
+
+    {% else %}
+
+
+    <!-- TEST BİLGİLERİ -->
+
+    <div class="result-section info-box">
+
+        <h2>Test Bilgileri</h2>
+
+        <div class="test-info-list">
+
+            <p>
+                <span>Model:</span>
+                <strong>{{ model_info.name }}</strong>
+            </p>
+
+            <p>
+                <span>Özne:</span>
+                <strong>#{{ subject_id }}</strong>
+            </p>
+
+            <p>
+                <span>Özne Grubu:</span>
+
+                {% if result.actual_class == 1 %}
+
+                    <strong class="subject-pd">
+                        Parkinson Hastası (PD)
+                    </strong>
+
+                {% else %}
+
+                    <strong class="subject-hc">
+                        Sağlıklı Kontrol (HC)
+                    </strong>
+
+                {% endif %}
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- MODEL TAHMİNİ -->
+
+    <div class="
+        result-section
+        result-main
+        {% if result.prediction == 1 %}
+            pd-result
+        {% else %}
+            hc-result
+        {% endif %}
+    ">
+
+        <div class="result-small-title">
+            Model Tahmini
+        </div>
+
+
+        <div class="result-icon">
+
+            {% if result.prediction == 1 %}
+                ⚠️
+            {% else %}
+                ✅
+            {% endif %}
+
+        </div>
+
+
+        <div class="prediction-label">
+            {{ result.predicted_label }}
+        </div>
+
+
+        <div class="confidence">
+
+            Güven Skoru
+
+            <b>
+                %{{ "%.1f"|format(result.confidence * 100) }}
+            </b>
+
+        </div>
+
+    </div>
+
+
+    <!-- TAHMİN SONUCU -->
+
+    {% if result.is_correct %}
+
+        <div class="classification-message correct-classification">
+
+            <div class="classification-icon">
+                ✓
+            </div>
+
+            <div class="classification-content">
+
+                <strong>
+                    Tahmin Doğru
+                </strong>
+
+                <span>
+                    Model, öznenin gerçek grubunu doğru tahmin etti.
+                </span>
+
+            </div>
+
+        </div>
+
+    {% else %}
+
+        <div class="classification-message wrong-classification">
+
+            <div class="classification-icon">
+                ✕
+            </div>
+
+            <div class="classification-content">
+
+                <strong>
+                    Tahmin Yanlış
+                </strong>
+
+                <span>
+                    Modelin tahmini öznenin gerçek grubuyla eşleşmedi.
+                </span>
+
+            </div>
+
+        </div>
+
+    {% endif %}
+
+
+    <!-- SINIF OLASILIKLARI -->
+
+    <div class="result-section">
+
+        <h2>Sınıf Olasılıkları</h2>
+
+
+        <div class="prob-item">
+
+            <div class="prob-header">
+
+                <span class="prob-name">
+                    Sağlıklı Kontrol (HC)
+                </span>
+
+                <span class="prob-value">
+                    %{{ "%.1f"|format(result.probabilities.HC * 100) }}
+                </span>
+
+            </div>
+
+
+            <div class="prob-bar-bg">
+
+                <div
+                    class="prob-bar-fill hc-fill"
+                    data-probability="{{ result.probabilities.HC }}">
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="prob-item">
+
+            <div class="prob-header">
+
+                <span class="prob-name">
+                    Parkinson Hastası (PD)
+                </span>
+
+                <span class="prob-value">
+                    %{{ "%.1f"|format(result.probabilities.PD * 100) }}
+                </span>
+
+            </div>
+
+
+            <div class="prob-bar-bg">
+
+                <div
+                    class="prob-bar-fill pd-fill"
+                    data-probability="{{ result.probabilities.PD }}">
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <a href="/" class="back-link">
+        ← Yeni Tahmin Yap
+    </a>
+
+
+    {% endif %}
+
+
+    <footer>
+
+        <p>
+            Bu sistem klinik tanı yerine geçmez.
+            Yalnızca araştırma ve eğitim amaçlıdır.
+        </p>
+
+    </footer>
+
+</div>
+
+
+<script>
+
+    document
+        .querySelectorAll(".prob-bar-fill")
+        .forEach(function (bar) {
+
+            const probability =
+                parseFloat(bar.dataset.probability);
+
+            if (!isNaN(probability)) {
+
+                bar.style.width =
+                    (probability * 100) + "%";
+
+            }
+
+        });
+
+</script>
+
+</body>
+
+</html>
