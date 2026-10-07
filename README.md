@@ -1,4 +1,4 @@
-# Parkinson Tespit Sistemi
+# Parkinson Hastalığının Ses Verileriyle Tespiti 
 ### Çoklu Ses Kayıtları Üzerinde Robust Ağırlıklı Özetleme ile Parkinson Hastalığı Tespiti
 
 [🇹🇷 Türkçe](#-türkçe) | [🇬🇧 English](#-english)
