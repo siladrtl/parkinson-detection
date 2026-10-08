@@ -77,9 +77,6 @@ Bağımsız test setindeki /a/ ve /o/ kayıtlarına uygun olarak yalnızca ünl�
 - **Ses türü etkisi farklıdır:** K-means / ARI analizinde tek bir kayıt türü kendi başına belirgin bir sınıf ayrımı vermemiştir. Sürekli ünlüler, bağımsız testte ve tek ünlülü s-LOO deneylerinde güçlü sonuç vermiştir.
 - **Derin öğrenme küçük veride avantaj sağlamadı.**
 
-### Karşılaştırma
-Aynı veri setinde Sakar ve ark. %77,50 (s-LOO) bildirmiştir. Bu çalışmadaki %87,50 aynı bağlamda değerlendirilebilir.
-
 ## Sınırlılıklar
 
 - Eğitim seti yalnızca 40 özne içerir, aşırı öğrenme riski yüksektir.
