@@ -32,7 +32,7 @@ Ayrıca geliştirilen dört modeli karşılaştırmalı olarak deneyebileceğini
 
 ### Genel Yöntem Akışı
 
-<p align="center"><img src="docs/images/sekil_2_1_genel_yontem_akisi.png" alt="Genel yöntem akışı" width="520"></p>
+<p align="center"><img src="docs/sekil_2_1_genel_yontem_akisi.png" alt="Genel yöntem akışı" width="520"></p>
 
 ## Veri Seti
 
@@ -42,16 +42,16 @@ Ayrıca geliştirilen dört modeli karşılaştırmalı olarak deneyebileceğini
 
 **Bağımsız test seti:** 28 Parkinson hastası, 168 kayıt (sürekli /a/ ve /o/ ünlüleri). Bu bireyler eğitimde kullanılmamıştır.
 
-<p align="center"><img src="docs/images/sekil_2_2_veri_toplama_protokolu.png" alt="Veri toplama protokolü"></p>
+<p align="center"><img src="docs/sekil_2_2_veri_toplama_protokolu.png" alt="Veri toplama protokolü"></p>
 
-<p align="center"><img src="docs/images/sekil_2_3_akustik_ozellik_hiyerarsisi.png" alt="26 akustik özelliğin hiyerarşisi"></p>
+<p align="center"><img src="docs/sekil_2_3_akustik_ozellik_hiyerarsisi.png" alt="26 akustik özelliğin hiyerarşisi"></p>
 
 ## Yöntem
 
 ### 1. VIF Sonrası Baseline
 Pearson korelasyonunda |r| > 0,90 olan beş özellik çifti bulunmuştur. İteratif VIF (eşik: 10) ile sekiz özellik çıkarılmış, **26 özellik 18'e** düşürülmüştür. Çıkarılanlar: Shimmer_dda, Jitter_rap, Num_pulses, AC, Mean_pitch, Jitter_local, Shimmer_local, Pitch_std. Özne temsili ortalama + standart sapma ile oluşturulmuş ve RBF SVM ile sınıflandırılmıştır.
 
-<p align="center"><img src="docs/images/sekil_2_4_iteratif_vif_sureci.png" alt="İteratif VIF süreci" width="420"></p>
+<p align="center"><img src="docs/sekil_2_4_iteratif_vif_sureci.png" alt="İteratif VIF süreci" width="420"></p>
 
 ### 2. Robust Ağırlıklı Özetleme (önerilen yöntem)
 Her özne için 26 kayıt × 26 özellik matrisi, **52 boyutlu tek bir özne vektörüne** dönüştürülür:
@@ -64,7 +64,7 @@ Her özne için 26 kayıt × 26 özellik matrisi, **52 boyutlu tek bir özne vek
 
 En iyi katsayılarla (vowel_w = 1,2, number_w = 1,0, other_w = 0,8) RBF SVM **%87,50 doğruluk, 0,7586 MCC, %95 özgüllük** vermiştir.
 
-<p align="center"><img src="docs/images/sekil_2_5_robust_ozetleme_mekanizma.png" alt="Robust ağırlıklı özetleme mekanizması" width="560"></p>
+<p align="center"><img src="docs/sekil_2_5_robust_ozetleme_mekanizma.png" alt="Robust ağırlıklı özetleme mekanizması" width="560"></p>
 
 ### 3. Tutarsızlık ve Geçiş Profili
 Kayıtlar arası tutarsızlığı ve ses türleri arası geçişi temsil eden ek özelliklerle 130 boyutlu bir temsil denenmiştir. 40 örnek için boyut çok yüksek olduğundan performans düşmüştür (%80,00). Bu, aşırı öğrenme riskinin iyi bir örneğidir.
@@ -97,15 +97,15 @@ Aynı veri setinde Sakar ve ark. %77,50 (s-LOO) bildirmiştir. Bu çalışmadaki
 
 Flask tabanlı arayüzde dört model (Robust Ağırlıklı Özetleme, VIF Baseline, Conv1D + SE Attention, Ünlü-Odaklı) seçilip bir özne üzerinde denenebilir. Her tahminde **Honest s-LOO** uygulanır: seçilen özne modelden dışarıda tutulur ve model yeniden eğitilir. Böylece eğitim verisine bakarak çıkan sahte yüksek doğruluk önlenir. Arayüzde tahmin, güven skoru, HC/PD olasılıkları ve gerçek sınıf karşılaştırması görülür.
 
-<p align="center"><img src="docs/images/sekil_3_1_flask_mimari.png" alt="Flask mimarisi ve veri akışı" width="600"></p>
+<p align="center"><img src="docs/sekil_3_1_flask_mimari.png" alt="Flask mimarisi ve veri akışı" width="600"></p>
 
 <p align="center">
-  <img src="docs/images/sekil_3_2_baslangic_ekrani.png" width="48%" alt="Başlangıç ekranı">
-  <img src="docs/images/sekil_3_3_robust_ozne_secimi.png" width="48%" alt="Robust model özne seçimi">
+  <img src="docs/sekil_3_2_baslangic_ekrani.png" width="48%" alt="Başlangıç ekranı">
+  <img src="docs/sekil_3_3_robust_ozne_secimi.png" width="48%" alt="Robust model özne seçimi">
 </p>
 <p align="center">
-  <img src="docs/images/sekil_3_4_robust_ozne8_tahmin.png" width="48%" alt="Robust model tahmini">
-  <img src="docs/images/sekil_3_8_unlu_ozne10_tahmin.png" width="48%" alt="Ünlü-odaklı model tahmini">
+  <img src="docs/sekil_3_4_robust_ozne8_tahmin.png" width="48%" alt="Robust model tahmini">
+  <img src="docs/sekil_3_8_unlu_ozne10_tahmin.png" width="48%" alt="Ünlü-odaklı model tahmini">
 </p>
 
 ## Notebooklar
@@ -132,8 +132,7 @@ Python, NumPy, Pandas, SciPy, statsmodels, scikit-learn, TensorFlow/Keras, Matpl
 
 ```
 parkinson-detection/
-├── docs/
-│   └── images/            # README ve tez görselleri
+├── docs/                  # README ve tez görselleri (PNG)
 ├── model/                 # Eğitilmiş modeller ve yardımcı dosyalar (.pkl)
 ├── notebooks/             # Deneysel çalışmalar
 ├── static/
