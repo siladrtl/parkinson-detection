@@ -2,8 +2,6 @@
 
 **Çoklu Ses Kayıtları Üzerinde Robust Ağırlıklı Özetleme ile Parkinson Hastalığı Tespiti: Karşılaştırmalı Bir Sınıflandırma Çalışması**
 
-Düzce Üniversitesi, Bilgisayar Mühendisliği, BM498 Mezuniyet Tezi (2025-2026)
-
 🇹🇷 Türkçe | [🇬🇧 English](#-english)
 
 ## Öne Çıkan Sonuçlar
@@ -41,10 +39,6 @@ Ayrıca geliştirilen dört modeli karşılaştırmalı olarak deneyebileceğini
 **Eğitim seti:** 20 Parkinson hastası (PH) + 20 sağlıklı kontrol (SK) = 40 özne. Her özne için 26 kayıt (3 sürekli ünlü, 10 rakam, 4 cümle, 9 kelime), toplam 1.040 kayıt. Her kayıttan jitter, shimmer, pitch, harmonisite, periyodisite ve ses kırılmaları gruplarından 26 akustik özellik çıkarılmıştır.
 
 **Bağımsız test seti:** 28 Parkinson hastası, 168 kayıt (sürekli /a/ ve /o/ ünlüleri). Bu bireyler eğitimde kullanılmamıştır.
-
-<p align="center"><img src="docs/sekil_2_2_veri_toplama_protokolu.png" alt="Veri toplama protokolü"></p>
-
-<p align="center"><img src="docs/sekil_2_3_akustik_ozellik_hiyerarsisi.png" alt="26 akustik özelliğin hiyerarşisi"></p>
 
 ## Yöntem
 
@@ -132,7 +126,7 @@ Python, NumPy, Pandas, SciPy, statsmodels, scikit-learn, TensorFlow/Keras, Matpl
 
 ```
 parkinson-detection/
-├── docs/                  # README ve tez görselleri (PNG)
+├── docs/                  # Proje görselleri
 ├── model/                 # Eğitilmiş modeller ve yardımcı dosyalar (.pkl)
 ├── notebooks/             # Deneysel çalışmalar
 ├── static/
@@ -180,8 +174,6 @@ Bu proje yalnızca akademik araştırma ve eğitim amacıyla geliştirilmiştir.
 ## Parkinson's Disease Detection from Voice Recordings
 
 **Robust Weighted Summarization of Multiple Voice Recording Types: A Comparative Classification Study**
-
-Undergraduate thesis (BM498), Department of Computer Engineering, Düzce University, 2025-2026.
 
 ## Key Results
 
